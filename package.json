@@ -1,0 +1,13 @@
+{
+  "name": "fm-funds",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@ledgerhq/hw-app-eth": "^5.19.1",
+    "@ledgerhq/hw-transport-node-hid": "^5.19.1",
+    "ethereumjs-tx": "^2.1.2",
+    "ethers": "^5.0.6"
+  }
+}
