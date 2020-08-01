@@ -13,11 +13,11 @@ Before starting, a set of environment variables has to be set:
 | Env var         | Description |
 |-----------------|-------------|
 | `RPC_URL`       | An HTTP(s) RPC URL for yourEthereum node. Infura works fine for this. |
-| `PATH`          | Your Ledger path for your account with the address index appended (e.g. `m/44'/60'/0'/0/0`) |
+| `LEDGER_PATH`          | Your Ledger path for your account with the address index appended (e.g. `m/44'/60'/0'/0/0`) |
 | `ADMIN_ADDRESS` | The admin address in the FluxAggregator contracts. This is the address that writes results to the FA contract. |
 | `GAS_PRICE`     | Gas price in Gwei. Max value is 250. Defaults to 50. |
 
-You also need to create a `jobs.txt` file with a list of FluxAggregator contracts to use. Place one address per line.
+You also need to create a `contracts.txt` file with a list of FluxAggregator contracts to use. Place one address per line.
 
 ## Running
 
@@ -36,5 +36,7 @@ Simply run the script with Node:
 ```bash
 node ./index.js
 ```
+
+_Note: If you are getting errors about not being able to connect to the device, try running with sudo: `sudo -E node ./index.js`_
 
 The script will now check the withdrawable amounts in the FluxAggregator contracts, and prompt you to withdraw!

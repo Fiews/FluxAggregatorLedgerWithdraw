@@ -8,7 +8,7 @@ const ABI = [
 ]
 
 const ethers = require('ethers')
-const fs = require('fs').promises;
+const fs = require('fs').promises
 const Transport = require("@ledgerhq/hw-transport-node-hid").default
 const EthApp = require('@ledgerhq/hw-app-eth').default
 const { Transaction } = require('ethereumjs-tx')
@@ -16,18 +16,27 @@ const readline = require('readline')
 
 const ENV_GAS_PRICE = Number(process.env.GAS_PRICE) || DEFAULT_GAS
 const GAS_PRICE = (ENV_GAS_PRICE > 250 ? 250 : ENV_GAS_PRICE) * 1e9
+const GAS_LIMIT = 300000
 const RPC_URL = process.env.RPC_URL || DEFAULT_RPC_URL
-const PATH = process.env.PATH || DEFAULT_PATH
+const PATH = process.env.LEDGER_PATH || DEFAULT_PATH
 const ADMIN_ADDRESS = process.env.ADMIN_ADDRESS
 const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
 
 const main = async () => {
-    const flux_array = (await fs.readFile('jobs.txt', 'utf8')).split('\n')
+    console.log(`RPC_URL=${RPC_URL}`)
+    console.log(`LEDGER_PATH=${PATH}`)
+
+    const flux_array = (await fs.readFile('contracts.txt', 'utf8')).split('\n')
 
     const transport = await Transport.create()
     const eth = new EthApp(transport)
     const address = await eth.getAddress(PATH)
     console.log(`Using address ${address.address}`)
+
+    // Calculate max gas cost
+    const maxGas = (GAS_LIMIT*GAS_PRICE)/1e18
+    console.log(`Using gas price: ${GAS_PRICE/1e9} Gwei`)
+    console.log(`Max tx fee: ${maxGas} ETH`)
 
     let nonce = await provider.getTransactionCount(address.address)
 
@@ -62,7 +71,7 @@ const main = async () => {
 const signTransaction = async (eth, rawTx, nonce) => {
     const txData = {
         nonce: nonce,
-        gasLimit: ethers.utils.hexlify(300000),
+        gasLimit: ethers.utils.hexlify(GAS_LIMIT),
         gasPrice: ethers.utils.hexlify(GAS_PRICE),
         to: rawTx.to,
         value: '0x00',
