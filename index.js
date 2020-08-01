@@ -19,7 +19,7 @@ const GAS_PRICE = (ENV_GAS_PRICE > 250 ? 250 : ENV_GAS_PRICE) * 1e9
 const GAS_LIMIT = 300000
 const RPC_URL = process.env.RPC_URL || DEFAULT_RPC_URL
 const PATH = process.env.LEDGER_PATH || DEFAULT_PATH
-const ADMIN_ADDRESS = process.env.ADMIN_ADDRESS
+const NODE_ADDRESS = process.env.NODE_ADDRESS
 const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
 
 const main = async () => {
@@ -44,7 +44,7 @@ const main = async () => {
         if (v.length === 0) continue
 
         const contract = new ethers.Contract(v, ABI, provider)
-        const result = await contract.withdrawablePayment(ADMIN_ADDRESS)
+        const result = await contract.withdrawablePayment(NODE_ADDRESS)
         console.log(`${v} withdrawable: ${result / 1e18}`)
         if (result / 1e18 < 1) {
             console.log('Balance under 1 LINK, skipping...')
@@ -57,7 +57,7 @@ const main = async () => {
             continue
         }
 
-        const rawTx = await contract.populateTransaction.withdrawPayment(ADMIN_ADDRESS, address.address, result)
+        const rawTx = await contract.populateTransaction.withdrawPayment(NODE_ADDRESS, address.address, result)
 
         console.log('Sending request to Ledger. Please check device!')
         const signedTx = await signTransaction(eth, rawTx, nonce)
