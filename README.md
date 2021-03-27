@@ -13,9 +13,9 @@ Before starting, a set of environment variables has to be set:
 | Env var         | Description |
 |-----------------|-------------|
 | `RPC_URL`       | An HTTP(s) RPC URL for yourEthereum node. Infura works fine for this. |
-| `LEDGER_PATH`   | Your Ledger path for your account with the address index appended (e.g. `m/44'/60'/0'/0/0`) |
 | `NODE_ADDRESS`  | The node address in the FluxAggregator contracts. This is the address that writes results to the FA contract. |
-| `GAS_PRICE`     | Gas price in Gwei. Max value is 250. Defaults to 50. |
+| `PRIVATE_KEY`   | Private key of the account to use. |
+| `CHAIN_ID`      | The chain ID that's in use. |
 
 You also need to create a `contracts.txt` file with a list of FluxAggregator contracts to use. Place one address per line.
 
